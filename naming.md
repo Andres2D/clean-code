@@ -17,3 +17,37 @@
 
 ### Classes
 * Describe the object (User, Customer, Student)
+
+## Don'ts
+`product.diePlease()` 💩
+`product.remove()` ✅
+
+`user.facePalm()` 💩
+`user.sendErrorMessage()` ✅
+
+`message(n)` 💩
+`message(newUser)` ✅
+
+`ymdt = '20230612CET'` 💩
+`dateWithTimeZone = '20230612CET'` ✅
+
+`userList = { u1: ..., u2: ... }` 💩
+`userMap = { u1: ..., u2: ... }` ✅
+
+`allAccounts = accounts.filter()` 💩
+`filteredAccounts = accounts.filter()` ✅
+
+```
+analytics.getDailyData(day);
+analytics.getDayData();
+analytics.getRawDailyData(day);
+analytics.getParsedDailyData(day);
+``` 💩
+
+```
+analytics.getDailyReport(day);
+analytics.getDataForToday();
+analytics.getRawDailyData(day);
+analytics.getParsedDailyData(day);
+``` ✅
+
