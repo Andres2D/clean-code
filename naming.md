@@ -38,16 +38,15 @@
 `filteredAccounts = accounts.filter()` ✅
 
 ```
-analytics.getDailyData(day);
-analytics.getDayData();
-analytics.getRawDailyData(day);
-analytics.getParsedDailyData(day);
-``` 💩
+analytics.getDailyData(day); 💩
+analytics.getDayData(); 💩
+analytics.getRawDailyData(day); 💩
+analytics.getParsedDailyData(day); 💩
+``` 
 
 ```
-analytics.getDailyReport(day);
-analytics.getDataForToday();
-analytics.getRawDailyData(day);
-analytics.getParsedDailyData(day);
-``` ✅
-
+analytics.getDailyReport(day); ✅
+analytics.getDataForToday(); ✅
+analytics.getRawDailyData(day); ✅
+analytics.getParsedDailyData(day); ✅
+``` 
