@@ -37,14 +37,14 @@
 `allAccounts = accounts.filter()` 💩
 `filteredAccounts = accounts.filter()` ✅
 
-```
+```js
 analytics.getDailyData(day); 💩
 analytics.getDayData(); 💩
 analytics.getRawDailyData(day); 💩
 analytics.getParsedDailyData(day); 💩
 ``` 
 
-```
+```js
 analytics.getDailyReport(day); ✅
 analytics.getDataForToday(); ✅
 analytics.getRawDailyData(day); ✅

@@ -39,4 +39,3 @@ class User {
 const user = new User({name: 'Andres', email: 'andres2d@mail.com', role: 'developer'});
 ```
 This way we're just passing a single parameter and because is an object, the order doesn't matter.
-
