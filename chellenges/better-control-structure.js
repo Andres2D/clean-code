@@ -37,39 +37,50 @@ function main() {
 
 function processTransactions(transactions) {
 
-  if(!transactions || transactions.length === 0) {
-    console.log('No transactions provided!');
+  if(isEmpty(transactions)) {
+    showErrorMessage('No transactions provided!');
     return;
   }
 
-  for (const transaction of transactions) {
+  for (const transaction of transactions) {    
+    processTransaction(transaction);
+  }
+}
 
-    if(transaction.type !== 'PAYMENT' || transaction.type !== 'REFUND') {
-      console.log('Invalid transaction type!', transaction);
-      continue;
+function isEmpty(transactions) {
+  return !transactions || transactions.length === 0;
+}
+
+function showErrorMessage(message) {
+  console.log(message);
+}
+
+function processTransaction(transaction) {
+  if(transaction.type !== 'PAYMENT' || transaction.type !== 'REFUND') {
+    console.log('Invalid transaction type!', transaction);
+    return;
+  }
+
+  if(transaction.status !== 'OPEN') {
+    console.log('Invalid transaction type!');
+    return;
+  }
+
+  if (transaction.type === 'PAYMENT') {
+    if (transaction.method === 'CREDIT_CARD') {
+      processCreditCardPayment(transaction);
+    } else if (transaction.method === 'PAYPAL') {
+      processPayPalPayment(transaction);
+    } else if (transaction.method === 'PLAN') {
+      processPlanPayment(transaction);
     }
-
-    if(transaction.status !== 'OPEN') {
-      console.log('Invalid transaction type!');
-      continue;
-    }
-
-    if (transaction.type === 'PAYMENT') {
-      if (transaction.method === 'CREDIT_CARD') {
-        processCreditCardPayment(transaction);
-      } else if (transaction.method === 'PAYPAL') {
-        processPayPalPayment(transaction);
-      } else if (transaction.method === 'PLAN') {
-        processPlanPayment(transaction);
-      }
-    } else if (transaction.type === 'REFUND') {
-      if (transaction.method === 'CREDIT_CARD') {
-        processCreditCardRefund(transaction);
-      } else if (transaction.method === 'PAYPAL') {
-        processPayPalRefund(transaction);
-      } else if (transaction.method === 'PLAN') {
-        processPlanRefund(transaction);
-      }
+  } else if (transaction.type === 'REFUND') {
+    if (transaction.method === 'CREDIT_CARD') {
+      processCreditCardRefund(transaction);
+    } else if (transaction.method === 'PAYPAL') {
+      processPayPalRefund(transaction);
+    } else if (transaction.method === 'PLAN') {
+      processPlanRefund(transaction);
     }
   }
 }
