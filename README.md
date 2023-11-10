@@ -4,3 +4,4 @@ Some notes about clean code [course](https://www.udemy.com/course/writing-clean-
 ### Content
 1. [Naming](./naming.md) 🔖
 2. [Functions & Methods](./methods.md) 🚧
+3. [Control structures](./control-structures.md) 🔨
