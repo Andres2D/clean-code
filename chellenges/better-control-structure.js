@@ -69,47 +69,46 @@ function showErrorMessage(message, item) {
 function processTransaction(transaction) {
   try {
     validateTransaction(transaction);
-  
-    if(usesTransactionMethod(transaction, 'CREDIT_CARD')) {
-      processCreditCardTransaction(transaction);
-    } else if(usesTransactionMethod(transaction, 'PAYPAL')) {
-      processPayPalTransaction(transaction);
-    } else if(usesTransactionMethod(transaction, 'PLAN')) {
-      processPlanTransaction(transaction);
-    }
+    processWithProcessor(transaction);
   } catch(error) {
     showErrorMessage(error.message);
   }
+}
+
+function processWithProcessor(transaction) {
+  const processors = getTransactionProcessors(transaction);
+
+  if(isPayment(transaction)) {
+    processors.processPayment();
+  } else {
+    processors.processRefund();
+  }
+}
+
+function getTransactionProcessors(transaction) {
+  let processors = {
+    processPayment: null,
+    processRefund: null
+  };
+
+  if(usesTransactionMethod(transaction, 'CREDIT_CARD')) {
+    processors.processPayment = processCreditCardPayment;
+    processors.processRefund = processCreditCardRefund;
+  } else if(usesTransactionMethod(transaction, 'PAYPAL')) {
+    processors.processPayment = processPayPalPayment;
+    processors.processRefund = processPayPalRefund;
+  } else if(usesTransactionMethod(transaction, 'PLAN')) {
+    processors.processPayment = processPlanPayment;
+    processors.processRefund = processPlanRefund;
+  }
+
+  return processors;
 }
 
 function validateTransaction(transaction) {
   if(!isPayment(transaction) || !isRefund(transaction) || !isOpen(transaction)) {
     const error = new Error('Invalid transaction type!');
     throw error;
-  }
-}
-
-function processCreditCardTransaction(transaction) {
-  if(isPayment(transaction)) {
-    processCreditCardPayment();
-  } else if(isRefund(transaction)) {
-    processCreditCardRefund();
-  }
-}
-
-function processPayPalTransaction() {
-  if(isPayment(transaction)) {
-    processPayPalPayment();
-  } else if(isRefund(transaction)) {
-    processPayPalRefund();
-  }
-}
-
-function processPlanTransaction() {
-  if(isPayment(transaction)) {
-    processPlanPayment();
-  } else if(isRefund(transaction)) {
-    processPlanRefund();
   }
 }
 
@@ -123,26 +122,6 @@ function isRefund(transaction) {
 
 function isOpen(transaction) {
   return transaction.status !== 'OPEN';
-}
-
-function processPayment(paymentTransaction) {
-  if (paymentTransaction.method === 'CREDIT_CARD') {
-    processCreditCardPayment(paymentTransaction);
-  } else if (paymentTransaction.method === 'PAYPAL') {
-    processPayPalPayment(paymentTransaction);
-  } else if (paymentTransaction.method === 'PLAN') {
-    processPlanPayment(paymentTransaction);
-  }
-}
-
-function processRefund(refundTransaction) {
-  if (refundTransaction.method === 'CREDIT_CARD') {
-    processCreditCardRefund(refundTransaction);
-  } else if (refundTransaction.method === 'PAYPAL') {
-    processPayPalRefund(refundTransaction);
-  } else if (refundTransaction.method === 'PLAN') {
-    processPlanRefund(refundTransaction);
-  }
 }
 
 function usesTransactionMethod(transaction, method) {
