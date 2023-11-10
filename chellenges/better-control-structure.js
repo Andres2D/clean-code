@@ -40,15 +40,22 @@ function main() {
 }
 
 function processTransactions(transactions) {
+  validateTransactions(transactions);
 
+  for (const transaction of transactions) { 
+    try {
+      processTransaction(transaction);
+    } catch(error) {
+      showErrorMessage(error.message);
+    }
+  }
+}
+
+function validateTransactions(transactions) {
   if(isEmpty(transactions)) {
     const error = new Error('No transactions provided!');
     error.code = 1;
     throw error;
-  }
-
-  for (const transaction of transactions) {    
-    processTransaction(transaction);
   }
 }
 
@@ -64,15 +71,7 @@ function showErrorMessage(message, item) {
 }
 
 function processTransaction(transaction) {
-  if(!isPayment(transaction) || !isRefund(transaction)) {
-    showErrorMessage('Invalid transaction type!', transaction);
-    return;
-  }
-
-  if(!isOpen(transaction)) {
-    showErrorMessage('Invalid transaction type!');
-    return;
-  }
+  validateTransaction(transaction);
 
   if(usesTransactionMethod(transaction, 'CREDIT_CARD')) {
     processCreditCardTransaction(transaction);
@@ -80,6 +79,13 @@ function processTransaction(transaction) {
     processPayPalTransaction(transaction);
   } else if(usesTransactionMethod(transaction, 'PLAN')) {
     processPlanTransaction(transaction);
+  }
+}
+
+function validateTransaction(transaction) {
+  if(!isPayment(transaction) || !isRefund(transaction) || !isOpen(transaction)) {
+    const error = new Error('Invalid transaction type!');
+    throw error;
   }
 }
 
