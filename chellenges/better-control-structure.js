@@ -43,11 +43,7 @@ function processTransactions(transactions) {
   validateTransactions(transactions);
 
   for (const transaction of transactions) { 
-    try {
-      processTransaction(transaction);
-    } catch(error) {
-      showErrorMessage(error.message);
-    }
+    processTransaction(transaction);
   }
 }
 
@@ -71,14 +67,18 @@ function showErrorMessage(message, item) {
 }
 
 function processTransaction(transaction) {
-  validateTransaction(transaction);
-
-  if(usesTransactionMethod(transaction, 'CREDIT_CARD')) {
-    processCreditCardTransaction(transaction);
-  } else if(usesTransactionMethod(transaction, 'PAYPAL')) {
-    processPayPalTransaction(transaction);
-  } else if(usesTransactionMethod(transaction, 'PLAN')) {
-    processPlanTransaction(transaction);
+  try {
+    validateTransaction(transaction);
+  
+    if(usesTransactionMethod(transaction, 'CREDIT_CARD')) {
+      processCreditCardTransaction(transaction);
+    } else if(usesTransactionMethod(transaction, 'PAYPAL')) {
+      processPayPalTransaction(transaction);
+    } else if(usesTransactionMethod(transaction, 'PLAN')) {
+      processPlanTransaction(transaction);
+    }
+  } catch(error) {
+    showErrorMessage(error.message);
   }
 }
 
