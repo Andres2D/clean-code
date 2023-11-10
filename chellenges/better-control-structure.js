@@ -69,10 +69,36 @@ function processTransaction(transaction) {
     return;
   }
 
-  if (isPayment(transaction)) {
-    processPayment(transaction);
-  } else if (isRefund(transaction)) {
-    processRefund(transaction);
+  if(usesTransactionMethod(transaction, 'CREDIT_CARD')) {
+    processCreditCardTransaction(transaction);
+  } else if(usesTransactionMethod(transaction, 'PAYPAL')) {
+    processPayPalTransaction(transaction);
+  } else if(usesTransactionMethod(transaction, 'PLAN')) {
+    processPlanTransaction(transaction);
+  }
+}
+
+function processCreditCardTransaction(transaction) {
+  if(isPayment(transaction)) {
+    processCreditCardPayment();
+  } else if(isRefund(transaction)) {
+    processCreditCardRefund();
+  }
+}
+
+function processPayPalTransaction() {
+  if(isPayment(transaction)) {
+    processPayPalPayment();
+  } else if(isRefund(transaction)) {
+    processPayPalRefund();
+  }
+}
+
+function processPlanTransaction() {
+  if(isPayment(transaction)) {
+    processPlanPayment();
+  } else if(isRefund(transaction)) {
+    processPlanRefund();
   }
 }
 
@@ -108,6 +134,10 @@ function processRefund(refundTransaction) {
   }
 }
 
+function usesTransactionMethod(transaction, method) {
+  return transaction.method === method;
+}
+ 
 function processCreditCardPayment(transaction) {
   console.log(
     'Processing credit card payment for amount: ' + transaction.amount
