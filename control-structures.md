@@ -17,3 +17,25 @@ if(!email.includes('@')) { // this is a guard
 }
 // rest of code
 ```
+
+### USe more Errors & Error handling
+Is something is an error make it an error.
+
+💩
+```js
+if(!isEmail) {
+  return {
+    code: 422,
+    message: 'Invalid input'
+  };
+}
+```
+
+✅
+```js
+if(!isEmail) {
+  const error = new Error('Invalid input');
+  error.code = 422;
+  throw error;
+}
+```

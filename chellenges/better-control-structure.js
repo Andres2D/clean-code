@@ -32,14 +32,19 @@ function main() {
     },
   ];
 
-  processTransactions(transactions);
+  try {
+    processTransactions(transactions);
+  } catch(error) {
+    showErrorMessage(error.message);
+  }
 }
 
 function processTransactions(transactions) {
 
   if(isEmpty(transactions)) {
-    showErrorMessage('No transactions provided!');
-    return;
+    const error = new Error('No transactions provided!');
+    error.code = 1;
+    throw error;
   }
 
   for (const transaction of transactions) {    
@@ -59,7 +64,7 @@ function showErrorMessage(message, item) {
 }
 
 function processTransaction(transaction) {
-  if(transaction.type !== 'PAYMENT' || transaction.type !== 'REFUND') {
+  if(!isPayment(transaction) || !isRefund(transaction)) {
     showErrorMessage('Invalid transaction type!', transaction);
     return;
   }
