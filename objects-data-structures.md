@@ -1,4 +1,4 @@
-## Classes, Objects & Data Structures 📦️
+## Objects & Data Structures 📦️
 
 ### Objects
 Private internals properties, with methods. Contain business logic.
