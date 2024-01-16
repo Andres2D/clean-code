@@ -1,4 +1,4 @@
-## SOLID Principles
+## SOLID Principles 🚩
 
 ### S: Single Responsibility
 Classes should have a single responsibility and a class shouldn't change for more than one reason.
